@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Editor.css";
 
 const Editor = ({ onCreate }) => {
-  const [content, setContent] = useState();
+  const [content, setContent] = useState("");
+  const contentRef = useRef();
 
   // content에 입력값 저장하기
   const onChangeContent = (e) => {
@@ -13,6 +14,8 @@ const Editor = ({ onCreate }) => {
   const onSubmit = () => {
     // 개선 1. 아무것도 입력이 되지 않았을 때 추가되지 않도록 하기
     if (!content.trim()) {
+      // 입력 필드 포커스하기기
+      contentRef.current.focus();
       console.log("투두를 입력하지 않았습니다");
       return;
     }
@@ -34,6 +37,7 @@ const Editor = ({ onCreate }) => {
         type="text"
         placeholder="새로운 할 일을 입력하세요"
         value={content}
+        ref={contentRef}
         onChange={onChangeContent}
       />
       <button onClick={onSubmit}>추가</button>
