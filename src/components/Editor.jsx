@@ -39,6 +39,7 @@ const Editor = ({ onCreate }) => {
         value={content}
         ref={contentRef}
         onChange={onChangeContent}
+        onKeyUp={onEnter}
       />
       <button onClick={onSubmit}>추가</button>
     </div>
