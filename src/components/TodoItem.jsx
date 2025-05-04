@@ -1,11 +1,14 @@
 import React from "react";
 import "./TodoItem.css";
 
-const TodoItem = ({ todo, onUpdate }) => {
+const TodoItem = ({ todo, onUpdate, onDelete }) => {
   const date = new Date(todo.date).toLocaleDateString();
   const onChangeCheckBox = () => {
     // onChangeCheckBox 함수가 실행되면 onUpdate 함수가 호출된다.
     onUpdate(todo.id);
+  };
+  const onClickDeleteButton = () => {
+    onDelete(todo.id);
   };
   return (
     <div className="TodoItem">
@@ -14,7 +17,7 @@ const TodoItem = ({ todo, onUpdate }) => {
       <input type="checkbox" onChange={onChangeCheckBox} />
       <div className="content">{todo.content}</div>
       <div className="date">{date}</div>
-      <button>삭제</button>
+      <button onClick={onClickDeleteButton}>삭제</button>
     </div>
   );
 };

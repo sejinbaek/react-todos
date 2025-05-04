@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./List.css";
 import TodoItem from "./TodoItem";
 
-const List = ({ todos, onUpdate }) => {
+const List = ({ todos, onUpdate, onDelete }) => {
   const [search, setSearch] = useState("");
 
   const onChangeSearch = (e) => {
@@ -32,7 +32,12 @@ const List = ({ todos, onUpdate }) => {
       <div className="todos_wrapper">
         {/* 필터링된 투두리스트를 렌더링한다. */}
         {filteredTodos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} onUpdate={onUpdate} />
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onUpdate={onUpdate}
+            onDelete={onDelete}
+          />
         ))}
       </div>
     </div>
