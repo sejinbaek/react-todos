@@ -23,6 +23,7 @@ const Editor = ({ onCreate }) => {
     console.log("투두 추가 완료");
     // 개선 2. 추가 후 입력 필드가 비워지도록 하기
     setContent("");
+    contentRef.current.focus();
   };
   // 개선 3. Enter를 눌러도 추가되도록 하기
   const onEnter = (e) => {
