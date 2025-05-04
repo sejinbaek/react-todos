@@ -30,7 +30,7 @@ function App() {
 
   const idRef = useRef(3);
 
-  // 새로운 투두 아이템 생성하기
+  // 새로운 투두 아이템 생성하기 (Create)
   const onCreate = (content) => {
     const newTodo = {
       id: idRef.current++,
@@ -41,11 +41,22 @@ function App() {
     setTodos([newTodo, ...todos]);
   };
 
+  // 하나의 투두 아이템 변경하기 (Update)
+  const onUpdate = (targetId) => {
+    setTodos(
+      // targetId가 하나의 투두아이템 id와 같다면 isDone을 토글시킨 새로운 객체를 반환하고,
+      // 다르다면, 기존의 todo 반환하기
+      todos.map((todo) =>
+        todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo
+      )
+    );
+  };
+
   return (
     <div className="App">
       <Header />
       <Editor onCreate={onCreate} />
-      <List todos={todos} />
+      <List todos={todos} onUpdate={onUpdate} />
     </div>
   );
 }
