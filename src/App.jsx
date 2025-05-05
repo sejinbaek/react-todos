@@ -1,41 +1,57 @@
 import "./App.css";
-import { useState, useRef } from "react";
+import { useRef, useReducer } from "react";
 import Editor from "./components/Editor";
 import Header from "./components/Header";
 import List from "./components/List";
 
+// useReducer 사용하기
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "CREATE":
+      return [action.data, ...state];
+    case "UPDATE":
+      return state.map((item) =>
+        item.id === action.targetId ? { ...item, isDone: !item.isDone } : item
+      );
+    case "DELETE":
+      return state.filter((item) => {
+        item.id !== action.targetId;
+      });
+  }
+};
+
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, dispatch] = useReducer(reducer, []);
 
   const idRef = useRef(1);
 
   // 새로운 투두 아이템 생성하기 (Create)
   const onCreate = (content) => {
-    const newTodo = {
-      id: idRef.current++,
-      isDone: false,
-      content: content,
-      date: new Date().getTime(),
-    };
-    setTodos([newTodo, ...todos]);
+    dispatch({
+      type: "CREATE",
+      data: {
+        id: idRef.current++,
+        isDone: false,
+        content: content,
+        date: new Date().getTime(),
+      },
+    });
   };
 
   // 하나의 투두 아이템 변경하기 (Update)
   const onUpdate = (targetId) => {
-    setTodos(
-      // targetId가 하나의 투두아이템 id와 같다면 isDone을 토글시킨 새로운 배열을 반환하고,
-      // 다르다면, 기존의 todo 반환하기
-      todos.map((todo) =>
-        todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo
-      )
-    );
+    dispatch({
+      type: "UPDATE",
+      targetId: targetId,
+    });
   };
 
   // 하나의 투두 아이템 삭제하기 (Delete)
   const onDelete = (targetId) => {
-    // todos 배열에서 targetId와 일치하는 id를 갖는 요소를 제거한 새로운 배열 반환하기
-    // 삭제 대상이 아닌 요소들만 필터링하기
-    setTodos(todos.filter((todo) => todo.id !== targetId));
+    dispatch({
+      type: "DELETE",
+      targetId: targetId,
+    });
   };
 
   return (
